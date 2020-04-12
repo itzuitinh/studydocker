@@ -69,6 +69,12 @@ docker network rm # xoa network
 docker network prune # Xóa đồng loạt các network không sử dụng
 docker network connect # tạo kết nối mạng
 docker network disconnect # ngắt kết nối network
+docker network create --subnet 192.168.1.0/24 network1 # tạo ra network có tên là network1 và subnet là 192.168.1.0/24 
+docker run -itd --name=container1 --network ne1work1 busybox
+docker run -itd --name=container2 --network network1 busybox
+==> taọ ra 2 container kết nối chung network 1
+docker attach <name container> # truy cập vào container
+
 
 
 
