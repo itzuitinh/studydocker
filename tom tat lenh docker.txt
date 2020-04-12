@@ -1,0 +1,70 @@
+# Tom tat lenh Docker
+yum install docker -y # cai dat docker
+docker search <name> # tim kiem image
+docker images # liet ke tat ca cac image co trong may chu
+docker pull <name image> # tai mot image ve server
+docker run --privileged -d -p 80:80 <image name> /sbin/init # chay mot container map port 80 ra ngoai
+docker exec -it <container ID> /bin/bash # vao container de chay lenh
+docker ps #liet ke cac container dang chay
+docker commit -m "comment" -a "Tac gia" <Container ID> <Image name>:<tag> # tao image tu container dang chay
+docker login # dang nhap docker hub de upload image
+docker push <name imange> #upload image len docker hub
+docker stop <container id> # stop container dang chay
+docker rm <contanier id> # xoa cac container
+docker rmi <image ID> # xoa image
+## Tong quan ve docker file
+ - FROM: Lay 1 image tren docker hub
+ - LABEL: thong tin nguoi bao tri dockerfile
+ - ENV: Thiet lap bien moi truong
+ - RUN: Chi chay khi build image, duoc su dung de cai dat các package vao container
+ - COPY: sao chep cac file va thu muc vao container
+ - ADD: Sao chep cac file va thu muc vao container
+ - CMD: thực thi lệnh và 1 dockerfile chỉ có 1 CMD và chỉ cahyj khi thực hiện lệnh docker run để tao ra 1 container
+ - WORKDIR: Thiết lập thư mục làm việc cho các chỉ thị khác như: RUN, CMD, ENTRYPOINT, COPY, ADD,...
+ - ARG: định nghĩa giá trị biến được dùng trong lúc build image
+ - ENTRYPOINT: CUng cấp lệnh à đối số cho một contianer
+ - EXPOSE: khai báo port map cho image
+ - VOLUME: Tạo một điểm để lưu trữ dữ liệu bên ngoài container
+ docker build -t <name> . # build image tu dockerfile
+ docker rm $(docker ps -a -q) # xoa toan bo container
+ docker rmi $(docker images -q) # xoa toan bo images
+ ## Tong quan docker-compose
+ - Dung de chay multi container dong thoi
+ - Tao file docker-compose.yml, viet theo cu phap yaml
+ - Tai lieu docker-compose https://docs.docker.com/compose/compose-file/
+ # Cac lenh trong Docker Compose
+	 version: chỉ ra phiên bản docker compose đã sử dụng
+	 services: thiết lập các cointainer muốn cài đặt
+	 image: chỉ ra image được sử dụng khi tạo ra container
+	 build: dùng để tạo cointainer từ docker file nếu muốn chỉ định docker file thì dùng context:
+	 ports: map port với host ví dụ: 8080:80 là map port 80 của container với port 8080 của host
+	 restart: tự khởi chạy lại khi container bị tắt
+	 environment: thiết lập các biến môi trường
+	 deppends_on: chỉ ra sự phụ thuộc. nghĩa là services(container) nào phải chạy trước khi start container hiện tại
+	 volume: dùng để mount hai thư mục trên host và container với nhau
+	 links: cho phép đăng ký  một bí danh cho container để cho các container khác có thể gọi đế nó
+	 context: Xác định thư mục gốc chứa dockerfile
+docker-compose build # build cac image
+docker-compose up -d # build va khoi chay cac contaniner trong docker-compose stop #  dung cac container
+docker-compose start #chay lai cac cointainer da stop va khong build lai cac image
+docker-compose down # xoa va stop tat cac cointainer
+# Tổng quan về volume, Networks
+docker volume là nơi lưu trữ data nằm ngoài container, mục đích không làm mất data khi xóa container
+Sử dụng Volume khi nào
+- Khi chia sẻ dữ liệu giữa nhiều container đang chạy
+- Lưu dữ liệu tới một server remote hoặc cloud
+- Khi cần backup, resoter haowcj migrate dữ liệu sang host khác
+docker volume create <volume name> # Tạo volume mới
+docker volume inspect <volume name> # xem chi tiết volume bao gồm đường dẫn lưu trữ volume trên host
+docker volume ls <volume name> # hiển thị những volume đang có
+docker volume rm <volume name># xoa volume
+docker volume prune # xóa các volume rỗng
+docker run --name project01 -p 8081:80 -v project01_code:/usr/local/apache2/htdocs -d httpd # khoi chay container httpd, map port 80:8081 va mount volume project01_code vao /usr/local/apache2/htdocs
+# Tổng quan về network trong docker
+Dùng để kết nối các container trong cùng một mạng hoặc khác mạng với nhau
+
+
+
+
+
+
